@@ -4,7 +4,7 @@ import './App.css';
 function App() {
   const [count, setCount] = useState(0);
   useEffect(() => {
-    fetch('http://localhost:5000')
+    fetch('http://localhost:5000'/music/)
       .then((res) => res.json())
       .then((data) => console.log(data))
   }, []);
