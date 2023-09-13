@@ -8,5 +8,6 @@ CORS(app)
 def hello():
     return jsonify({'message': 'Hi Mom!'})
 
+
 if __name__ == '__main__':
     app.run(debug=True)

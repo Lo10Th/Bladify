@@ -3,8 +3,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# VS Code
+.vscode/
+
 # config
 /backend/config.py
+/backend/bladeify-google-Cloud.json
 
 # C extensions
 *.so
