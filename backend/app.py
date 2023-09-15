@@ -31,5 +31,17 @@ def stream_song(song_name):
 
     return Response(generate(), mimetype='audio/mp3')
 
+@app.route('/search/<query>', methods=['GET'])
+def search_songs(query):
+    search_query = f"%{query}%"
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM tracks WHERE title LIKE %s OR artist LIKE %s", (search_query, search_query))
+    songs = cursor.fetchall()
+    cursor.close()
+
+    result = [{"id": song[0], "title": song[1], "artist": song[2]} for song in songs]
+    return jsonify(result)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
