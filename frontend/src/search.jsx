@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom'; // Importiere NavLink anstelle von Link
 
 function Search() {
   const [inputValue, setInputValue] = useState('');
@@ -29,7 +30,9 @@ function Search() {
       <button onClick={searchSongs}>Search</button>
       <ul>
         {searchResults.map((song) => (
-          <li key={song.id}>{song.title} - {song.artist}</li>
+          <li key={song.id}>
+            <NavLink to={`/song/${song.id}`}>{song.title} - {song.artist}</NavLink>
+          </li>
         ))}
       </ul>
     </div>

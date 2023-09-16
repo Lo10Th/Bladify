@@ -14,8 +14,6 @@ function App() {
   const playAudio = () => {
     if (inputValue) {
       setIsAudioPlaying(true);
-      // Hier protokollieren wir die URL in der Konsole
-      console.log(`Audio URL: ${audioUrl}`);
     }
   };
 
