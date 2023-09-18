@@ -1,0 +1,8 @@
+.app-container {
+    display: flex;
+}
+  
+.content {
+    display: grid;
+    place-content: center;
+}

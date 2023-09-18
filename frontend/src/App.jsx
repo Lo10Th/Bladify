@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './index.css';
 
 function App() {
   const [inputValue, setInputValue] = useState('');
@@ -18,19 +19,21 @@ function App() {
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        value={inputValue}
-        onChange={handleInputChange}
-      />
-      <button onClick={playAudio}>Play Audio</button>
-      {isAudioPlaying && inputValue && (
-        <audio controls autoPlay>
-          <source src={audioUrl} type="audio/mpeg" />
-          Your browser does not support the audio element.
-        </audio>
-      )}
+    <div className='content'>
+      <div>
+        <input
+          type="text"
+          value={inputValue}
+          onChange={handleInputChange}
+        />
+        <button onClick={playAudio}>Play Audio</button>
+        {isAudioPlaying && inputValue && (
+          <audio controls autoPlay>
+            <source src={audioUrl} type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
+        )}
+      </div>
     </div>
   );
 }
