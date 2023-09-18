@@ -41,19 +41,19 @@ function Navbar() {
             <li className="item">
               <a href="#" className="link flex">
                 <i className="bx bxs-magic-wand"></i>
-                <span>Magic Build</span>
+                <span>Playlists</span>
               </a>
             </li>
             <li className="item">
               <a href="#" className="link flex">
                 <i className="bx bx-folder"></i>
-                <span>New Projects</span>
+                <span>Music-Library</span>
               </a>
             </li>
             <li className="item">
               <a href="#" className="link flex">
                 <i className="bx bx-cloud-upload"></i>
-                <span>Upload New</span>
+                <span>Upload Music</span>
               </a>
             </li>
           </ul>
