@@ -27,13 +27,13 @@ function Navbar() {
               <span className="line"></span>
             </div>
             <li className="item">
-              <a href="#" className="link flex">
+              <a href="/" className="link flex">
                 <i className="bx bx-home-alt"></i>
                 <span>Overview</span>
               </a>
             </li>
             <li className="item">
-              <a href="#" className="link flex">
+              <a href="/search" className="link flex">
                 <i className="bx bx-grid-alt"></i>
                 <span>Search</span>
               </a>

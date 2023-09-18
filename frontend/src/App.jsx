@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './index.css';
 
 function App() {
   const [inputValue, setInputValue] = useState('');
@@ -18,7 +19,7 @@ function App() {
   };
 
   return (
-    <div className='content'> {/* Hier wird ebenfalls die CSS-Klasse 'content' hinzugefügt */}
+    <div className='content'>
       <div>
         <input
           type="text"
