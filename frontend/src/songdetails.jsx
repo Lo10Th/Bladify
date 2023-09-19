@@ -34,7 +34,7 @@ function SongDetails() {
 
     return (
         <div className='content'>
-            <h2>Song Details</h2>
+            <h2>Song</h2>
             <p>Title: {songDetails.title}</p>
             <p>Artist: {songDetails.artist}</p>
             <audio ref={audioRef} controls preload="none">
