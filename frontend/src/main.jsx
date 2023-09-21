@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 import Navbar from './navbar.jsx'
-import Search from './search.jsx';
+import Search from './searchbar/search.jsx';
 import SongDetails from './songdetails.jsx';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
