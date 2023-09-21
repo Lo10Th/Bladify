@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from "react";
 
-import '../index.css';
+import "./search.css";
+import { SearchBar } from "./searchbar/searchbar.jsx";
+import { SearchResultsList } from "./searchbar/searchresultlist.jsx";
 
 function Search() {
   const [results, setResults] = useState([]);
 
   return (
-    <div className="App">
+    <div className="Search">
       <div className="search-bar-container">
         <SearchBar setResults={setResults} />
         {results && results.length > 0 && <SearchResultsList results={results} />}

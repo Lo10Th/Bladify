@@ -1,25 +1,21 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
+import { Link } from "react-router-dom"; 
 
 import "./SearchBar.css";
 
 export const SearchBar = ({ setResults }) => {
   const [input, setInput] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
 
   const fetchData = (value) => {
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((response) => response.json())
-      .then((json) => {
-        const results = json.filter((user) => {
-          return (
-            value &&
-            user &&
-            user.name &&
-            user.name.toLowerCase().includes(value)
-          );
+    if (value) {
+      fetch(`http://localhost:5000/search/${value}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setSearchResults(data);
         });
-        setResults(results);
-      });
+    }
   };
 
   const handleChange = (value) => {
@@ -35,6 +31,15 @@ export const SearchBar = ({ setResults }) => {
         value={input}
         onChange={(e) => handleChange(e.target.value)}
       />
+      <ul>
+        {searchResults.map((song) => (
+          <li key={song.id}>
+            <Link to={`/song/${song.id}`}>
+              {song.title} - {song.artist}
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

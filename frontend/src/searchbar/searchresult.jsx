@@ -1,4 +1,6 @@
-import "./SearchResult.css";
+import React, { useState } from 'react';
+
+import "./searchresult.css";
 
 export const SearchResult = ({ result }) => {
   return (
