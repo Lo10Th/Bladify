@@ -6,9 +6,15 @@ import "./searchresultlist.css";
 export const SearchResultsList = ({ results }) => {
   return (
     <div className="results-list">
-      {results.map((result) => (
-        <SearchResult result={result} key={result.id} />
-      ))}
+      {results && results.length > 0 ? (
+        <ul>
+          {results.map((result) => (
+            <SearchResult result={result.title} key={result.id} />
+          ))}
+        </ul>
+      ) : (
+        <p>No results found.</p>
+      )}
     </div>
   );
-};
+}
