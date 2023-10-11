@@ -9,7 +9,7 @@ export const SearchResultsList = ({ results }) => {
       {results && results.length > 0 ? (
         <ul>
           {results.map((result) => (
-            <SearchResult result={result.title} key={result.id} />
+            <SearchResult result={result} key={result.id} />
           ))}
         </ul>
       ) : (
@@ -17,4 +17,4 @@ export const SearchResultsList = ({ results }) => {
       )}
     </div>
   );
-}
+};
