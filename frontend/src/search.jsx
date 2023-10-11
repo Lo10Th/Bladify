@@ -1,42 +1,28 @@
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import './index.css';
+import { useState } from "react";
+import "./search.css";
+import { SearchBar } from "./searchbar/searchbar.jsx";
+import { SearchResultsList } from "./searchbar/searchresultlist.jsx";
 
 function Search() {
-  const [inputValue, setInputValue] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+  const [results, setResults] = useState([]);
 
-  const handleInputChange = (event) => {
-    const newValue = event.target.value;
-    setInputValue(newValue);
-  };
-
-  const searchSongs = () => {
-    if (inputValue) {
-      fetch(`http://localhost:5000/search/${inputValue}`)
+  const fetchData = (value) => {
+    if (value) {
+      fetch(`http://localhost:5000/search/${value}`)
         .then((response) => response.json())
         .then((data) => {
-          setSearchResults(data);
+          setResults(data);
         });
     }
   };
 
   return (
-    <div>
-      <div className='content'>
-        <input
-          type="text"
-          value={inputValue}
-          onChange={handleInputChange}
-        />
-        <button onClick={searchSongs}>Search</button>
-        <ul>
-          {searchResults.map((song) => (
-            <li key={song.id}>
-              <NavLink to={`/song/${song.id}`}>{song.title} - {song.artist}</NavLink>
-            </li>
-          ))}
-        </ul>
+    <div className="Search">
+      <div className="search-bar-container">
+        <SearchBar setResults={setResults} />
+        {results && results.length > 0 && (
+          <SearchResultsList results={results} />
+        )}
       </div>
     </div>
   );
