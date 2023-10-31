@@ -14,7 +14,7 @@ function Navbar() {
         <span className="nav_image">
           <img src="/Bladify Logo.png" alt="logo_img" />
         </span>
-        <span className="logo_name">Bladyfiy</span>
+        <span className="logo_name">Bladify</span>
         <i className={`bx ${isSidebarLocked ? 'bx-lock-alt' : 'bx-lock-open-alt'}`} id="lock-icon" title="Unlock Sidebar"></i>
         <i className="bx bx-x" id="sidebar-close"></i>
       </div>
