@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useRef, useState } from 'react';
+import React, { memo, useCallback, useRef, useState, useEffect } from 'react';
 import { Button, Dimensions, Text, View, Platform } from 'react-native';
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 
@@ -6,12 +6,16 @@ export const Searchbar = memo(() => {
   const [loading, setLoading] = useState(false);
   const [suggestionsList, setSuggestionsList] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [query, setQuery] = useState('');
   const dropdownController = useRef(null);
+
+  useEffect(() => {
+    getSuggestions(query);
+  }, [query]);
 
   const searchRef = useRef(null);
 
   const getSuggestions = useCallback(async q => {
-    const filterToken = q.toLowerCase();
     console.log('getSuggestions', q);
     if (typeof q !== 'string' || q.length < 3) {
       setSuggestionsList(null);
@@ -19,22 +23,32 @@ export const Searchbar = memo(() => {
     }
     setLoading(true);
     try {
-      const response = await fetch(`http://192.168.178.90:5000/search/${q}`);
+      const response = await fetch(`http://192.168.178.91:5000/search/${q}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      const data = await response.json();
-      const suggestions = data.map(item => ({
-        id: item.id,
-        title: item.title,
-      }));
-      setSuggestionsList(suggestions);
+  
+      const responseDataText = await response.text();
+      
+      if (responseDataText) {
+        const responseData = JSON.parse(responseDataText);
+        const suggestions = responseData.map(item => ({
+          id: item.id,
+          title: item.title,
+        }));
+        setSuggestionsList(suggestions);
+      } else {
+        console.error('Empty or invalid JSON response');
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
   }, []);
+  
+  
+  
 
   const onClearPress = useCallback(() => {
     setSuggestionsList(null);
@@ -60,15 +74,15 @@ export const Searchbar = memo(() => {
           onSelectItem={item => {
             item && setSelectedItem(item.id);
           }}
-          debounce={600}
+          debounce={200}
           suggestionsListMaxHeight={Dimensions.get('window').height * 0.4}
           onClear={onClearPress}
           onOpenSuggestionsList={onOpenSuggestionsList}
           loading={loading}
           useFilter={false}
           textInputProps={{
-            placeholder: 'Type 3+ letters (dolo...)',
-            autoCorrect: false,
+            placeholder: 'Search...',
+            autoCorrect: true,
             autoCapitalize: 'none',
             style: {
               borderRadius: 25,
