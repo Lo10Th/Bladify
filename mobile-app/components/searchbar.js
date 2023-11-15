@@ -1,118 +1,55 @@
-import React, { memo, useCallback, useRef, useState, useEffect } from 'react';
-import { Button, Dimensions, Text, View, Platform } from 'react-native';
-import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
 
-export const Searchbar = memo(() => {
-  const [loading, setLoading] = useState(false);
-  const [suggestionsList, setSuggestionsList] = useState(null);
-  const [selectedItem, setSelectedItem] = useState(null);
+export const Searchbar = () => {
   const [query, setQuery] = useState('');
-  const dropdownController = useRef(null);
+  const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
-    getSuggestions(query);
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://192.168.178.91:5000/search/${query}`);
+        const data = await response.json();
+        const sortedResults = data.sort((a, b) => a.id - b.id);
+        setSearchResults(sortedResults);
+      } catch (error) {
+        console.error('Fehler beim Abrufen der Daten:', error);
+      }
+    };
+
+    if (query.trim() !== '') {
+      fetchData();
+    } else {
+      setSearchResults([]);
+    }
   }, [query]);
 
-  const searchRef = useRef(null);
+  const renderSearchResultItem = ({ item }) => (
+    <TouchableOpacity onPress={() => handleResultClick(item)}>
+      <View>
+        <Text>{item.title}</Text>
+      </View>
+    </TouchableOpacity>
+  );
 
-  const getSuggestions = useCallback(async q => {
-    console.log('getSuggestions', q);
-    if (typeof q !== 'string' || q.length < 3) {
-      setSuggestionsList(null);
-      return;
-    }
-    setLoading(true);
-    try {
-      const response = await fetch(`http://192.168.178.91:5000/search/${q}`);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-  
-      const responseDataText = await response.text();
-      
-      if (responseDataText) {
-        const responseData = JSON.parse(responseDataText);
-        const suggestions = responseData.map(item => ({
-          id: item.id,
-          title: item.title,
-        }));
-        setSuggestionsList(suggestions);
-      } else {
-        console.error('Empty or invalid JSON response');
-      }
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-  
-  
-  
-
-  const onClearPress = useCallback(() => {
-    setSuggestionsList(null);
-  }, []);
-
-  const onOpenSuggestionsList = useCallback(isOpened => {}, []);
+  const handleResultClick = (result) => {
+    console.log('Songseite wird geöffnet:', result);
+  };
 
   return (
-    <>
-      <View
-        style={[
-          { flex: 1, flexDirection: 'row', alignItems: 'center' },
-          Platform.select({ ios: { zIndex: 1 } }),
-        ]}>
-        <AutocompleteDropdown
-          ref={searchRef}
-          controller={controller => {
-            dropdownController.current = controller;
-          }}
-          direction={Platform.select({ ios: 'down' })}
-          dataSet={suggestionsList}
-          onChangeText={getSuggestions}
-          onSelectItem={item => {
-            item && setSelectedItem(item.id);
-          }}
-          debounce={200}
-          suggestionsListMaxHeight={Dimensions.get('window').height * 0.4}
-          onClear={onClearPress}
-          onOpenSuggestionsList={onOpenSuggestionsList}
-          loading={loading}
-          useFilter={false}
-          textInputProps={{
-            placeholder: 'Search...',
-            autoCorrect: true,
-            autoCapitalize: 'none',
-            style: {
-              borderRadius: 25,
-              backgroundColor: '#383b42',
-              color: '#fff',
-              paddingLeft: 18,
-            },
-          }}
-          rightButtonsContainerStyle={{
-            right: 8,
-            height: 30,
-            alignSelf: 'center',
-          }}
-          inputContainerStyle={{
-            backgroundColor: '#383b42',
-            borderRadius: 25,
-          }}
-          suggestionsListContainerStyle={{
-            backgroundColor: '#383b42',
-          }}
-          containerStyle={{ flexGrow: 1, flexShrink: 1 }}
-          renderItem={(item, text) => <Text style={{ color: '#fff', padding: 15 }}>{item.title}</Text>}
-          inputHeight={50}
-          showChevron={false}
-          closeOnBlur={false}
-        />
-        <View style={{ width: 10 }} />
-        <Button style={{ flexGrow: 0 }} title="Toggle" onPress={() => dropdownController.current.toggle()} />
-      </View>
-      <Text style={{ color: '#668', fontSize: 13 }}>Selected item id: {JSON.stringify(selectedItem)}</Text>
-    </>
+    <View style={{ marginTop: 50, marginLeft: 10, marginRight: 10 }}>
+      <TextInput
+        placeholder="Suche nach einem Song..."
+        value={query}
+        onChangeText={(text) => setQuery(text)}
+      />
+      <FlatList
+        data={searchResults}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderSearchResultItem}
+      />
+    </View>
   );
-});
+};
+
+export default Searchbar;
