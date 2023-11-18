@@ -1,14 +1,16 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { Searchbar } from './components/searchbar';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import AppNavigator from './AppNavigator';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Searchbar />
-    </View>
+    <NavigationContainer>
+      <AppNavigator />
+    </NavigationContainer>
   );
 }
 
+/*
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -17,3 +19,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+*/

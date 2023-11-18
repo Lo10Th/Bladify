@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 export const Searchbar = () => {
   const [query, setQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -13,7 +15,7 @@ export const Searchbar = () => {
         const sortedResults = data.sort((a, b) => a.id - b.id);
         setSearchResults(sortedResults);
       } catch (error) {
-        console.error('Fehler beim Abrufen der Daten:', error);
+        console.error('Error while fetching data:', error);
       }
     };
 
@@ -33,13 +35,13 @@ export const Searchbar = () => {
   );
 
   const handleResultClick = (result) => {
-    console.log('Songseite wird geöffnet:', result);
+    navigation.navigate('SongDetails', { title: result.title, artist: result.artist, id: result.id });
   };
 
   return (
     <View style={{ marginTop: 50, marginLeft: 10, marginRight: 10 }}>
       <TextInput
-        placeholder="Suche nach einem Song..."
+        placeholder="Search for a song..."
         value={query}
         onChangeText={(text) => setQuery(text)}
       />
