@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, Button } from 'react-native';
 import { Audio } from 'expo-av';
 
-
 const SongDetails = ({ route }) => {
   const { title, artist, id } = route.params;
   const [songDetails, setSongDetails] = useState(null);
@@ -15,7 +14,7 @@ const SongDetails = ({ route }) => {
             data.title = data.title.replace('.mp3', '');
             setSongDetails(data);
         });
-}, [id]);
+  }, [id]);
 
   async function playAudio() {
     try {
@@ -26,6 +25,12 @@ const SongDetails = ({ route }) => {
       await sound.playAsync();
     } catch (error) {
       console.error('Error while playing audio:', error);
+    }
+  }
+
+  async function pauseAudio() {
+    if (sound) {
+      await sound.pauseAsync();
     }
   }
 
@@ -43,6 +48,7 @@ const SongDetails = ({ route }) => {
       <Text>Artist: {artist || 'Unknown'}</Text>
       <Text>ID: {id}</Text>
       <Button title="Play" onPress={playAudio} />
+      <Button title="Pause" onPress={pauseAudio} />
     </View>
   );
 };
