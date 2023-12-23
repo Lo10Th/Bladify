@@ -1,29 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Button } from 'react-native';
+import { Audio } from 'expo-av';
 
 
 const SongDetails = ({ route }) => {
   const { title, artist, id } = route.params;
-  const audioRef = useRef(null);
-  const [audioSource, setAudioSource] = useState(null);
-
-  const playAudio = () => {
-    if (audioRef.current) {
-        if (!audioSource) {
-            setAudioSource(
-                <source
-                    src={`http://localhost:5000/stream/${songDetails.title}`}
-                    type="audio/mpeg"
-                />
-            );
-        }
-        audioRef.current.load();
-        audioRef.current.play();
-    }
-  };
+  const [songDetails, setSongDetails] = useState(null);
+  const [sound, setSound] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/song/${id}`)
+    fetch(`http://192.168.178.90:5000/song/${id}`)
         .then((response) => response.json())
         .then((data) => {
             data.title = data.title.replace('.mp3', '');
@@ -31,17 +17,32 @@ const SongDetails = ({ route }) => {
         });
 }, [id]);
 
+  async function playAudio() {
+    try {
+      const { sound } = await Audio.Sound.createAsync(
+        { uri: `http://192.168.178.90:5000/stream/${songDetails.title}`}
+      );
+      setSound(sound);
+      await sound.playAsync();
+    } catch (error) {
+      console.error('Error while playing audio:', error);
+    }
+  }
+
+  useEffect(() => {
+    return sound
+      ? () => {
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
 
   return (
     <View>
       <Text>Title: {title}</Text>
       <Text>Artist: {artist || 'Unknown'}</Text>
       <Text>ID: {id}</Text>
-      <audio ref={audioRef} controls preload="none">
-        {audioSource}
-          Your browser does not support the audio element.
-      </audio>
-      <button onClick={playAudio}>Play</button>
+      <Button title="Play" onPress={playAudio} />
     </View>
   );
 };

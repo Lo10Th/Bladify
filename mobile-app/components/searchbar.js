@@ -10,7 +10,7 @@ export const Searchbar = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://192.168.178.91:5000/search/${query}`);
+        const response = await fetch(`http://192.168.178.90:5000/search/${query}`);
         const data = await response.json();
         const sortedResults = data.sort((a, b) => a.id - b.id);
         setSearchResults(sortedResults);
