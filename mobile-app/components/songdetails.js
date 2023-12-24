@@ -44,7 +44,7 @@ const SongDetails = ({ route }) => {
 
   return (
     <View>
-      <Text>Title: {title}</Text>
+      <Text>Title: {title.replace('.mp3', '')}</Text>
       <Text>Artist: {artist || 'Unknown'}</Text>
       <Text>ID: {id}</Text>
       <Button title="Play" onPress={playAudio} />
