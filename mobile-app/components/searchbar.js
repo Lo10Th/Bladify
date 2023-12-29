@@ -29,7 +29,7 @@ export const Searchbar = () => {
   const renderSearchResultItem = ({ item }) => (
     <TouchableOpacity onPress={() => handleResultClick(item)}>
       <View>
-        <Text style={{ fontSize: 18 }}>{item.title.replace('.mp3', '')}</Text>
+        <Text style={{ fontSize: 18, margin: 5 }}>{item.title.replace('.mp3', '')}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -39,12 +39,12 @@ export const Searchbar = () => {
   };
 
   return (
-    <View style={{ marginTop: 50, marginLeft: 10, marginRight: 10 }}>
+    <View style={{ marginTop: 35, marginLeft: 10, marginRight: 10 }}>
       <TextInput
         placeholder="Search for a song..."
         value={query}
         onChangeText={(text) => setQuery(text)}
-        style={{ borderWidth: 1, borderColor: 'black', padding: 10, fontSize: 20 }}
+        style={{ borderWidth: 2, borderRadius: 7, borderColor: 'black', padding: 10, fontSize: 20, marginBottom: 10 }}
       />
       <FlatList
         data={searchResults}
@@ -53,6 +53,6 @@ export const Searchbar = () => {
       />
     </View>
   );
-};
+}; 
 
 export default Searchbar;

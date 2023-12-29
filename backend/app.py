@@ -51,7 +51,7 @@ def search_songs(query):
     songs = cursor.fetchall()
     cursor.close()
 
-    result = [{"id": song[0], "title": song[1], "artist": song[2]} for song in songs]
+    result = [{ "title": song[1], "id": song[0], "artist": song[2]} for song in songs]
     return jsonify(result)
 
 @app.route('/song/<query>', methods=['GET'])
